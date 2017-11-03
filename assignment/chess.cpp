@@ -51,6 +51,7 @@ struct ChessPiece 	get_piece (ChessBoard chess_board, File file, Rank rank){
 
 }
 void 	setup_chess_board (ChessBoard chess_board){
+  init_chess_board(chess_board);
   struct ChessPiece white_king = {White, King};
   struct ChessPiece white_queen = {White, Queen};
   struct ChessPiece white_rook = {White, Rook};
@@ -89,12 +90,7 @@ void 	setup_chess_board (ChessBoard chess_board){
       add_piece(chess_board, i, 7, black_pawn);
     }
 
-    struct ChessPiece no_pice = {Black, NoPiece};
-    for (int i = 3; i < 6; i++) {
-      for (int j = 0; j < 8; j++) {
-        chess_board[i][j].is_occupied = false;
-      }
-    }
+
 }
 bool 	remove_piece (ChessBoard chess_board, File file, Rank rank){
   if(file >= 'a' && file<= 'h' && rank < 9&& rank> 0 &&is_square_occupied(chess_board, file, rank)){
@@ -111,22 +107,9 @@ bool 	squares_share_rank (File s1_f, Rank s1_r, File s2_f, Rank s2_r){
 }
 bool 	squares_share_diagonal (File s1_f, Rank s1_r, File s2_f, Rank s2_r){
  if(!(s1_f >= 'a' && s1_f<= 'h' && s1_r < 9&& s1_r> 0 &&s2_f >= 'a' && s2_f<= 'h' && s2_r < 9&& s2_r> 0))return false;
-  int pos_back_rank = s1_r;
-  int pos_front_rank = s2_r;
-  char pos_back_file= s1_f;
-  char pos_front_file = s2_f;
-  if(s1_r > s2_r){
-    pos_back_rank = s2_r;
-    pos_front_rank = s1_r;
-  }
-  if(s1_f>s2_f){
-    pos_back_file= s2_f;
-    pos_front_file = s1_f;
-  }
-  int difference_rank = pos_front_rank - pos_back_rank;
-  int difference_file = (pos_front_file-'a') - (pos_back_file-'a');
-  if(difference_file != difference_rank){return false;}
-  return true;
+ if(s1_f-s2_f == s1_r -s2_r || s1_f-s2_f ==-1*( s1_r -s2_r))return true;
+
+ return false;
 }
 bool 	squares_share_knights_move (File s1_f, Rank s1_r, File s2_f, Rank s2_r){
   if (s1_r - s2_r != 0 && (s1_f-'a') - (s2_f-'a') != 0 && s1_r - s2_r < 3 && s1_r - s2_r > -3 &&(s1_f-'a') - (s2_f-'a')< 3 && (s1_f-'a') - (s2_f-'a')> -3)return true;
